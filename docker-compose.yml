@@ -1,0 +1,46 @@
+version: '2'
+services:
+  php:
+    build: ./php
+    working_dir: /var/www/html 
+    environment:
+      TEST_DEV: "Test String"
+    volumes:
+      - './php/config:/var/www/html/config'      
+      - './php/logs:/var/www/html/storage/logs'
+      - './php/php.ini:/usr/local/etc/php/php.ini'
+    ports:
+      - 9000-9003:9000
+    deploy:
+      replicas: 4
+  nginx:
+    build: ./nginx
+    working_dir: /var/www/html
+    volumes_from:
+      - php
+    ports:
+      - 8000:80
+  redis-server:
+    image: 'bitnami/redis:5.0'
+    environment:
+      # ALLOW_EMPTY_PASSWORD is recommended only for development.
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    ports:
+      - '6379:6379'
+    volumes:
+      - 'redis_data:/bitnami/redis/data'
+  mysql:
+    image: mysql:5.7
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_USER: test
+      MYSQL_PASSWORD: w!nd0wsxp
+      MYSQL_ROOT_PASSWORD: w!nd0wsxp
+    volumes:
+      - ./mysqldata:/var/lib/mysql      
+volumes:
+  redis_data:
+    driver: local
