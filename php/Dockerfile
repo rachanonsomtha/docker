@@ -41,7 +41,7 @@ RUN docker-php-ext-configure \
 
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd intl soap xsl redis
 
-COPY src/ /var/www/html
+COPY php/src/ /var/www/html
 
 # Set working directory
 WORKDIR /var/www/html
