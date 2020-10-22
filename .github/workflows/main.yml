@@ -1,0 +1,31 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [ build ]
+  pull_request:
+    branches: [ build ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:      
+    - name: Checkout
+      uses: actions/checkout@master
+    - name: PHP - Build and Push to Registry
+      uses: elgohr/Publish-Docker-Github-Action@master
+      with:
+        name: rachanonsomtha/docker
+        username: ${{ secrets.DEPLOY_USERNAME }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        registry: docker.pkg.github.com
+        dockerfile: php/Dockerfile
+        tags: php-latest
+    - name: nginx - Build and Push to Registry
+      uses: elgohr/Publish-Docker-Github-Action@master
+      with:
+        name: rachanonsomtha/docker
+        username: ${{ secrets.DEPLOY_USERNAME }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        registry: docker.pkg.github.com
+        dockerfile: nginx/Dockerfile
+        tags: nginx-latest
