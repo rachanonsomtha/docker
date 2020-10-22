@@ -14,7 +14,7 @@ jobs:
     - name: PHP - Build and Push to Registry
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
-        name: rachanonsomtha/docker
+        name: rachanonsomtha/docker/php
         username: ${{ secrets.DEPLOY_USERNAME }}
         password: ${{ secrets.GITHUB_TOKEN }}
         registry: docker.pkg.github.com
@@ -23,7 +23,7 @@ jobs:
     - name: nginx - Build and Push to Registry
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
-        name: rachanonsomtha/docker
+        name: rachanonsomtha/docker/nginx
         username: ${{ secrets.DEPLOY_USERNAME }}
         password: ${{ secrets.GITHUB_TOKEN }}
         registry: docker.pkg.github.com
